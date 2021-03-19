@@ -1,2 +1,2 @@
-# Troom
-Authentication service with event sourcing
+# Authentication service
+Authentication microservice with event sourcing
