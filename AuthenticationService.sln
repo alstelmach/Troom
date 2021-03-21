@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Utilities", "..\Core\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.UnitTests", "Authentication.UnitTests\Authentication.UnitTests.csproj", "{59C82006-6E11-4D3D-9222-C54B1C32ED98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.IntegrationEvents", "Authentication.IntegrationEvents\Authentication.IntegrationEvents.csproj", "{08A7F36C-0FC3-491B-8818-4543100D91E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{59C82006-6E11-4D3D-9222-C54B1C32ED98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59C82006-6E11-4D3D-9222-C54B1C32ED98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59C82006-6E11-4D3D-9222-C54B1C32ED98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08A7F36C-0FC3-491B-8818-4543100D91E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08A7F36C-0FC3-491B-8818-4543100D91E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08A7F36C-0FC3-491B-8818-4543100D91E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08A7F36C-0FC3-491B-8818-4543100D91E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DD33579E-4D84-4C76-8135-07559C4C4653} = {8AAC4126-31E0-4641-9F0A-61B0F498A5FE}
@@ -77,5 +83,6 @@ Global
 		{2D3F66BA-9D02-4D5B-9414-604C29C17887} = {9A675571-96BB-4FA2-BD52-9EB413B550DE}
 		{0438CF33-67D4-4D72-81C7-661F9FFC8640} = {9A675571-96BB-4FA2-BD52-9EB413B550DE}
 		{59C82006-6E11-4D3D-9222-C54B1C32ED98} = {2A4669C1-9C87-4991-B1BD-899DFF419704}
+		{08A7F36C-0FC3-491B-8818-4543100D91E3} = {8AAC4126-31E0-4641-9F0A-61B0F498A5FE}
 	EndGlobalSection
 EndGlobal
