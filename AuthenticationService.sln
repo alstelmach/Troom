@@ -1,12 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Api", "Authentication.Api\Authentication.Api.csproj", "{DD33579E-4D84-4C76-8135-07559C4C4653}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.Api", "User.Api\User.Api.csproj", "{DD33579E-4D84-4C76-8135-07559C4C4653}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Domain", "Authentication.Domain\Authentication.Domain.csproj", "{EFC50263-DB60-454E-9262-3B23EE9F2B60}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.Domain", "User.Domain\User.Domain.csproj", "{EFC50263-DB60-454E-9262-3B23EE9F2B60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Infrastructure", "Authentication.Infrastructure\Authentication.Infrastructure.csproj", "{3095D039-A136-4173-9AD8-E9C0414E2A5F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.Infrastructure", "User.Infrastructure\User.Infrastructure.csproj", "{3095D039-A136-4173-9AD8-E9C0414E2A5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Application", "Authentication.Application\Authentication.Application.csproj", "{B1EA27DA-8E9A-4833-B539-D2004B0CBEA3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.Application", "User.Application\User.Application.csproj", "{B1EA27DA-8E9A-4833-B539-D2004B0CBEA3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{8AAC4126-31E0-4641-9F0A-61B0F498A5FE}"
 EndProject
@@ -22,9 +22,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Infrastructure", "..\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Utilities", "..\Core\Core.Utilities\Core.Utilities.csproj", "{0438CF33-67D4-4D72-81C7-661F9FFC8640}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.UnitTests", "Authentication.UnitTests\Authentication.UnitTests.csproj", "{59C82006-6E11-4D3D-9222-C54B1C32ED98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.UnitTests", "User.UnitTests\User.UnitTests.csproj", "{59C82006-6E11-4D3D-9222-C54B1C32ED98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.IntegrationEvents", "Authentication.IntegrationEvents\Authentication.IntegrationEvents.csproj", "{08A7F36C-0FC3-491B-8818-4543100D91E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.IntegrationEvents", "User.IntegrationEvents\User.IntegrationEvents.csproj", "{08A7F36C-0FC3-491B-8818-4543100D91E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
