@@ -49,7 +49,7 @@ namespace User.Infrastructure.Persistence.Read.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", "UserContextReadModel");
+                    b.ToTable("Users", "UserRead");
                 });
 #pragma warning restore 612, 618
         }

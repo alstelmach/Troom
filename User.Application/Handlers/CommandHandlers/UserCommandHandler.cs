@@ -18,7 +18,8 @@ namespace User.Application.Handlers.CommandHandlers
         
         public async Task<Unit> Handle(CreateUserCommand command, CancellationToken cancellationToken)
         {
-            await _userService.CreateUserAsync(command.Login,
+            await _userService.CreateUserAsync(command.Id,
+                command.Login,
                 command.Password,
                 command.Name,
                 command.LastName,

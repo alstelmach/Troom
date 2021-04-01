@@ -1,22 +1,23 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
+using FluentValidation.Results;
+using Moq;
 using User.Domain.User.Factories;
 using User.Domain.User.Repositories;
 using User.Domain.User.Services;
 using User.Domain.User.ValueObjects;
-using FluentValidation;
-using FluentValidation.Results;
-using Moq;
 using Xunit;
 
-namespace User.UnitTests.Domain.Services
+namespace User.UnitTests.Domain.User.Services
 {
     public sealed class UserDomainServiceTest
     {
         private readonly Mock<IUserRepository> _userRepositoryMock = new();
         private readonly Mock<IEncryptionService> _encryptionServiceMock = new();
-        private readonly Mock<IValidator<User.Domain.User.User>> _userValidatorMock = new();
+        private readonly Mock<IValidator<global::User.Domain.User.User>> _userValidatorMock = new();
         private readonly Mock<IValidator<Password>> _passwordValidatorMock = new();
         private readonly UserService _userDomainService;
         
@@ -31,6 +32,7 @@ namespace User.UnitTests.Domain.Services
         public async Task ShouldCreateUser()
         {
             // Arrange
+            var id = Guid.NewGuid();
             const string login = "admin";
             const string password = "abc123ABV";
             const string firstName = "Jan";
@@ -50,16 +52,16 @@ namespace User.UnitTests.Domain.Services
 
             _userValidatorMock
                 .Setup(userValidator =>
-                    userValidator.ValidateAsync(It.IsAny<User.Domain.User.User>(), CancellationToken.None))
+                    userValidator.ValidateAsync(It.IsAny<global::User.Domain.User.User>(), CancellationToken.None))
                 .ReturnsAsync(new ValidationResult());
 
             _userRepositoryMock
                 .Setup(userRepository =>
-                    userRepository.CreateAsync(It.IsAny<User.Domain.User.User>(), CancellationToken.None))
-                .ReturnsAsync(UserFactory.Create(login, expectedPasswordHash, firstName, lastName, mailAddress));
+                    userRepository.CreateAsync(It.IsAny<global::User.Domain.User.User>(), CancellationToken.None))
+                .ReturnsAsync(UserFactory.Create(id, login, expectedPasswordHash, firstName, lastName, mailAddress));
 
             // Act
-            await _userDomainService.CreateUserAsync(login, password, firstName, lastName, mailAddress);
+            await _userDomainService.CreateUserAsync(id, login, password, firstName, lastName, mailAddress);
         }
     }
 }

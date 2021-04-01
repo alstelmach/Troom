@@ -5,7 +5,7 @@ namespace User.Infrastructure.Persistence.Read.Context
 {
     public sealed class UserReadModelContext : DbContext
     {
-        public const string SchemaName = "User.Read";
+        public const string SchemaName = "UserRead";
         
         public UserReadModelContext(DbContextOptions<UserReadModelContext> options)
             : base(options)

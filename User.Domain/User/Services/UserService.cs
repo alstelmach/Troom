@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using FluentValidation;
 using User.Domain.User.Factories;
 using User.Domain.User.Repositories;
@@ -24,7 +25,8 @@ namespace User.Domain.User.Services
             _passwordValidator = passwordValidator;
         }
         
-        public async Task CreateUserAsync(string login,
+        public async Task CreateUserAsync(Guid id,
+            string login,
             string password,
             string firstName,
             string lastName,
@@ -33,7 +35,8 @@ namespace User.Domain.User.Services
             await _passwordValidator.ValidateAsync(new Password(password));
             var passwordHash = _encryptionService.EncodePassword(password);
             
-            var user = UserFactory.Create(login,
+            var user = UserFactory.Create(id,
+                login,
                 passwordHash,
                 firstName,
                 lastName,

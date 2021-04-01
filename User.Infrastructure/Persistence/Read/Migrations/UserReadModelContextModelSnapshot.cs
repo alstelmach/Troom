@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using User.Infrastructure.Persistence.Read.Context;
 
@@ -47,7 +46,7 @@ namespace User.Infrastructure.Persistence.Read.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", "UserContextReadModel");
+                    b.ToTable("Users", "UserRead");
                 });
 #pragma warning restore 612, 618
         }

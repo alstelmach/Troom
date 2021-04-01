@@ -19,16 +19,16 @@ namespace User.Application.Handlers.EventHandlers.Domain.User
             _userReadModelRepository = userReadModelRepository;
         }
         
-        public async Task Handle(UserCreatedDomainEvent notification, CancellationToken cancellationToken)
+        public async Task Handle(UserCreatedDomainEvent @event, CancellationToken cancellationToken)
         {
-            await AddUserReadModelAsync(notification);
+            await AddUserReadModelAsync(@event);
             
-            var integrationEvent = new UserCreatedIntegrationEvent(notification.EntityId,
-                notification.Login,
-                notification.Password,
-                notification.FirstName,
-                notification.LastName,
-                notification.MailAddress);
+            var integrationEvent = new UserCreatedIntegrationEvent(@event.EntityId,
+                @event.Login,
+                @event.Password,
+                @event.FirstName,
+                @event.LastName,
+                @event.MailAddress);
 
             await _integrationEventPublisher.PublishAsync(integrationEvent);
         }

@@ -8,11 +8,11 @@ namespace User.Infrastructure.Persistence.Read.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "UserContextReadModel");
+                name: "UserRead");
 
             migrationBuilder.CreateTable(
                 name: "Users",
-                schema: "UserContextReadModel",
+                schema: "UserRead",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -32,7 +32,7 @@ namespace User.Infrastructure.Persistence.Read.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Users",
-                schema: "UserContextReadModel");
+                schema: "UserRead");
         }
     }
 }

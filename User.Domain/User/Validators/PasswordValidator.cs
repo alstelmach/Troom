@@ -9,12 +9,10 @@ namespace User.Domain.User.Validators
     {
         private const string PasswordValidationRegex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
         
-        public PasswordValidator()
-        {
+        public PasswordValidator() =>
             RuleFor(password => password.Content)
                 .Must(SatisfyPasswordSecurityRules)
-                .OnAnyFailure(password => throw new InvalidPasswordException());
-        }
+                .OnAnyFailure(_ => throw new InvalidPasswordException());
 
         private static bool SatisfyPasswordSecurityRules(string password)
         {

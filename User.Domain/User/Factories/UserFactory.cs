@@ -4,12 +4,13 @@ namespace User.Domain.User.Factories
 {
     public static class UserFactory
     {
-        public static User Create(string login,
+        public static User Create(Guid id,
+            string login,
             byte[] password,
             string firstName,
             string lastName,
             string mailAddress) =>
-                new(Guid.NewGuid(),
+                new(id,
                     login,
                     password,
                     firstName,
