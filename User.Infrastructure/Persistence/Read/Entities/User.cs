@@ -6,7 +6,7 @@ using User.Infrastructure.Persistence.Read.Context;
 namespace User.Infrastructure.Persistence.Read.Entities
 {
     [Table("Users", Schema = UserReadModelContext.SchemaName)]
-    public sealed class User : Entity
+    public class User : Entity
     {
         public User(Guid id,
             string login,

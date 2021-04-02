@@ -12,7 +12,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Core\Core.Application.Abstractions\Core.Application.Abstractions.csproj" />
-      <ProjectReference Include="..\..\Core\Core.Infrastructure\Core.Infrastructure.csproj" />
       <ProjectReference Include="..\User.Domain\User.Domain.csproj" />
       <ProjectReference Include="..\User.Infrastructure\User.Infrastructure.csproj" />
       <ProjectReference Include="..\User.IntegrationEvents\User.IntegrationEvents.csproj" />
