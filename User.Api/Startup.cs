@@ -1,4 +1,5 @@
 using Core.Infrastructure.HealthCheck;
+using Core.Infrastructure.Identity;
 using Core.Infrastructure.Mvc;
 using User.Domain;
 using Core.Utilities.Swagger;
@@ -34,6 +35,7 @@ namespace User.Api
                 .UseHealthChecksMiddleware()
                 .UseHttpsRedirection()
                 .UseRouting()
+                .UseIdentityMiddlewares()
                 .UseEndpointsMiddleware();
     }
 }

@@ -25,7 +25,7 @@ namespace User.Application.Dto.User
         public Guid Id { get; }
         public string Login { get; }
         [JsonIgnore]
-        public byte[] Password { get; }
+        public byte[] Password { get; set; }
         public string FirstName { get; }
         public string LastName { get; }
         public string MailAddress { get; }

@@ -32,8 +32,7 @@ namespace User.Domain.User.Services
             string lastName,
             string mailAddress)
         {
-            await _passwordValidator.ValidateAsync(new Password(password));
-            var passwordHash = _encryptionService.EncodePassword(password);
+            var passwordHash = await EncodePasswordAsync(password);
             
             var user = UserFactory.Create(id,
                 login,
@@ -44,6 +43,24 @@ namespace User.Domain.User.Services
 
             await _userValidator.ValidateAsync(user);
             await _userRepository.CreateAsync(user);
+        }
+
+        public async Task ChangeUserPasswordAsync(Guid userId,
+            string password)
+        {
+            var user = await _userRepository.GetAsync(userId);
+            var encodedPassword = await EncodePasswordAsync(password);
+            
+            user.ChangePassword(encodedPassword);
+            await _userRepository.UpdateAsync(user);
+        }
+
+        private async Task<byte[]> EncodePasswordAsync(string password)
+        {
+            await _passwordValidator.ValidateAsync(new Password(password));
+            var passwordHash = _encryptionService.EncodePassword(password);
+
+            return passwordHash;
         }
     }
 }

@@ -38,6 +38,19 @@ namespace User.Domain.User
         public string LastName { get; private set; }
         public string MailAddress { get; private set; }
 
+        public void ChangePassword(byte[] password)
+        {
+            var areTheSame = Password == password;
+            
+            if (areTheSame)
+            {
+                return;
+            }
+
+            Password = password;
+            Enqueue(new PasswordChangedDomainEvent(Id, Password));
+        }
+
         private void Apply(UserCreatedDomainEvent @event)
         {
             Id = @event.EntityId;
@@ -47,5 +60,8 @@ namespace User.Domain.User
             LastName = @event.LastName;
             MailAddress = @event.MailAddress;
         }
+
+        private void Apply(PasswordChangedDomainEvent @event) =>
+            Password = @event.NewPassword;
     }
 }

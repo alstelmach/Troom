@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Core.Application.Abstractions.Messaging.Commands;
 using Core.Application.Abstractions.Messaging.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using User.Application.Contracts.Authentication;
 using User.Application.Dto;
@@ -22,6 +23,7 @@ namespace User.Api.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult<AuthenticationResultDto>> AuthenticateAsync([FromBody] AuthenticationQuery query,
             CancellationToken cancellationToken)
         {

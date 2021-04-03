@@ -26,6 +26,7 @@ namespace User.Api.Controllers
         }
         
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserCommand command,
             CancellationToken cancellationToken)
         {
@@ -56,6 +57,18 @@ namespace User.Api.Controllers
             return user is not null
                 ? Ok(user)
                 : NotFound();
+        }
+
+        [HttpPut("{userId}/password")]
+        [Authorize]
+        public async Task<IActionResult> ChangeUserPasswordAsync([FromBody] ChangeUserPasswordCommand command,
+            CancellationToken cancellationToken)
+        {
+            command.ClaimsPrincipal = User;
+
+            await CommandBus.SendAsync(command, cancellationToken);
+
+            return Ok();
         }
     }
 }
