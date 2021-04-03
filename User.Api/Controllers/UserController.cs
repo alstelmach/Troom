@@ -5,6 +5,8 @@ using Core.Application.Abstractions.Messaging.Commands;
 using Core.Application.Abstractions.Messaging.Queries;
 using Microsoft.AspNetCore.Mvc;
 using User.Application.Contracts.User.Commands;
+using User.Application.Contracts.User.Queries;
+using User.Application.Dto.User;
 using Controller = Core.Infrastructure.Mvc.Controller;
 
 namespace User.Api.Controllers
@@ -35,6 +37,24 @@ namespace User.Api.Controllers
             var resultAction = Created(uri, null);
 
             return resultAction;
+        }
+
+        [HttpGet("{userId}")]
+        // ToDo: Authorize
+        public async Task<ActionResult<UserDto>> GetUserAsync([FromRoute] Guid userId,
+            CancellationToken cancellationToken)
+        {
+            var query = new GetUserQuery
+            {
+                Id = userId,
+                ClaimsPrincipal = User
+            };
+
+            var user = await QueryBus.QueryAsync(query, cancellationToken);
+
+            return user is not null
+                ? Ok(user)
+                : NotFound();
         }
     }
 }

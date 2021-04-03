@@ -3,21 +3,21 @@ using System.Threading.Tasks;
 using Core.Application.Abstractions.Messaging.Queries;
 using User.Application.Contracts.Authentication;
 using User.Application.Dto;
+using User.Application.Dto.User;
+using User.Application.Services;
 using User.Domain.User.Services;
-using User.Infrastructure.Persistence.Read.Repositories.User;
-using User.Infrastructure.Services.TokenGeneration;
 
 namespace User.Application.Handlers.QueryHandlers
 {
     public sealed class AuthenticationQueryHandler : IQueryHandler<AuthenticationQuery, AuthenticationResultDto>
     {
-        private readonly IUserReadModelRepository _userRepository;
+        private readonly IUserDtoRepository _userRepository;
         private readonly IEncryptionService _encryptionService;
-        private readonly TokenGenerationService _tokenGenerationService;
+        private readonly ITokenGenerationService _tokenGenerationService;
 
-        public AuthenticationQueryHandler(IUserReadModelRepository userRepository,
+        public AuthenticationQueryHandler(IUserDtoRepository userRepository,
             IEncryptionService encryptionService,
-            TokenGenerationService tokenGenerationService)
+            ITokenGenerationService tokenGenerationService)
         {
             _userRepository = userRepository;
             _encryptionService = encryptionService;
@@ -42,7 +42,7 @@ namespace User.Application.Handlers.QueryHandlers
             {
                 authenticationResult.IsAuthenticated = true;
                 authenticationResult.JsonWebToken = _tokenGenerationService.GenerateToken(user.Id);
-                authenticationResult.TokenOwner = (UserDto) user;
+                authenticationResult.TokenOwner = user;
             }
 
             return authenticationResult;

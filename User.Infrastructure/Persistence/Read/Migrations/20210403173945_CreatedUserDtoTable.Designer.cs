@@ -10,8 +10,8 @@ using User.Infrastructure.Persistence.Read.Context;
 namespace User.Infrastructure.Persistence.Read.Migrations
 {
     [DbContext(typeof(UserReadModelContext))]
-    [Migration("20210327183947_CreatedUsersReadModelTable")]
-    partial class CreatedUsersReadModelTable
+    [Migration("20210403173945_CreatedUserDtoTable")]
+    partial class CreatedUserDtoTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,30 +21,29 @@ namespace User.Infrastructure.Persistence.Read.Migrations
                 .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("User.Infrastructure.Persistence.Read.Entities.User", b =>
+            modelBuilder.Entity("User.Application.Dto.User.UserDto", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("varchar(1000)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("varchar(1000)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Login")
                         .IsRequired()
-                        .HasColumnType("varchar(1000)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("MailAddress")
                         .IsRequired()
-                        .HasColumnType("varchar(1000)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<byte[]>("Password")
                         .IsRequired()
+                        .HasMaxLength(256)
                         .HasColumnType("bytea");
 
                     b.HasKey("Id");

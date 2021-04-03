@@ -1,4 +1,6 @@
-﻿namespace User.Application.Dto
+﻿using User.Application.Dto.User;
+
+namespace User.Application.Dto
 {
     public sealed class AuthenticationResultDto
     {

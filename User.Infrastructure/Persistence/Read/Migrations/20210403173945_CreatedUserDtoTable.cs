@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace User.Infrastructure.Persistence.Read.Migrations
 {
-    public partial class CreatedUsersReadModelTable : Migration
+    public partial class CreatedUserDtoTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,11 +16,11 @@ namespace User.Infrastructure.Persistence.Read.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Login = table.Column<string>(type: "varchar(1000)", nullable: false),
-                    Password = table.Column<byte[]>(type: "bytea", nullable: false),
-                    FirstName = table.Column<string>(type: "varchar(1000)", nullable: false),
-                    LastName = table.Column<string>(type: "varchar(1000)", nullable: false),
-                    MailAddress = table.Column<string>(type: "varchar(1000)", nullable: false)
+                    Login = table.Column<string>(type: "varchar(100)", nullable: false),
+                    Password = table.Column<byte[]>(type: "bytea", maxLength: 256, nullable: false),
+                    FirstName = table.Column<string>(type: "varchar(100)", nullable: true),
+                    LastName = table.Column<string>(type: "varchar(100)", nullable: true),
+                    MailAddress = table.Column<string>(type: "varchar(100)", nullable: false)
                 },
                 constraints: table =>
                 {

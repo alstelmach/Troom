@@ -1,20 +1,16 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
-using Core.Domain.Abstractions.BuildingBlocks;
-using User.Infrastructure.Persistence.Read.Context;
+using Newtonsoft.Json;
 
-namespace User.Infrastructure.Persistence.Read.Entities
+namespace User.Application.Dto.User
 {
-    [Table("Users", Schema = UserReadModelContext.SchemaName)]
-    public class User : Entity
+    public sealed class UserDto
     {
-        public User(Guid id,
+        public UserDto(Guid id,
             string login,
             byte[] password,
             string firstName,
             string lastName,
             string mailAddress)
-                : base(id)
         {
             Id = id;
             Login = login;
@@ -23,8 +19,12 @@ namespace User.Infrastructure.Persistence.Read.Entities
             LastName = lastName;
             MailAddress = mailAddress;
         }
-
+        
+        private UserDto() {}
+        
+        public Guid Id { get; }
         public string Login { get; }
+        [JsonIgnore]
         public byte[] Password { get; }
         public string FirstName { get; }
         public string LastName { get; }

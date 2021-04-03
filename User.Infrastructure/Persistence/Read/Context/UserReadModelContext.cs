@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using User.Application.Dto.User;
 using User.Infrastructure.Persistence.Read.Configuration;
 
 namespace User.Infrastructure.Persistence.Read.Context
@@ -12,10 +13,10 @@ namespace User.Infrastructure.Persistence.Read.Context
         {
         }
         
-        public DbSet<Entities.User> Users { get; set; }
+        public DbSet<UserDto> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) =>
             modelBuilder
-                .ApplyConfiguration(new UserEntityConfiguration());
+                .ApplyConfiguration(new UserDtoConfiguration());
     }
 }

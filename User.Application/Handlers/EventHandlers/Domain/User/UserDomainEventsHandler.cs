@@ -1,27 +1,27 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using User.Domain.User.Events;
-using User.Infrastructure.Persistence.Read.Repositories.User;
 using User.IntegrationEvents.User;
 using Core.Application.Abstractions.Messaging.Events;
+using User.Application.Dto.User;
 
 namespace User.Application.Handlers.EventHandlers.Domain.User
 {
     public sealed class UserDomainEventsHandler : IDomainEventHandler<UserCreatedDomainEvent>
     {
         private readonly IIntegrationEventPublisher _integrationEventPublisher;
-        private readonly IUserReadModelRepository _userReadModelRepository;
+        private readonly IUserDtoRepository _userDtoRepository;
 
         public UserDomainEventsHandler(IIntegrationEventPublisher integrationEventPublisher,
-            IUserReadModelRepository userReadModelRepository)
+            IUserDtoRepository userDtoRepository)
         {
             _integrationEventPublisher = integrationEventPublisher;
-            _userReadModelRepository = userReadModelRepository;
+            _userDtoRepository = userDtoRepository;
         }
         
         public async Task Handle(UserCreatedDomainEvent @event, CancellationToken cancellationToken)
         {
-            await AddUserReadModelAsync(@event);
+            await SaveUserDtoAsync(@event);
             
             var integrationEvent = new UserCreatedIntegrationEvent(@event.EntityId,
                 @event.Login,
@@ -33,16 +33,16 @@ namespace User.Application.Handlers.EventHandlers.Domain.User
             await _integrationEventPublisher.PublishAsync(integrationEvent);
         }
 
-        private async Task AddUserReadModelAsync(UserCreatedDomainEvent @event)
+        private async Task SaveUserDtoAsync(UserCreatedDomainEvent @event)
         {
-            var user = new global::User.Infrastructure.Persistence.Read.Entities.User(@event.Id,
+            var user = new UserDto(@event.EntityId,
                 @event.Login,
                 @event.Password,
                 @event.FirstName,
                 @event.LastName,
                 @event.MailAddress);
 
-            await _userReadModelRepository.CreateAsync(user);
+            await _userDtoRepository.CreateAsync(user);
         }
     }
 }

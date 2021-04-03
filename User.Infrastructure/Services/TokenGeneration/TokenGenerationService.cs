@@ -5,10 +5,11 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using User.Application.Services;
 
 namespace User.Infrastructure.Services.TokenGeneration
 {
-    public sealed class TokenGenerationService
+    public sealed class TokenGenerationService : ITokenGenerationService
     {
         private readonly TokenSettings _tokenSettings;
 

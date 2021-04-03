@@ -2,6 +2,7 @@
 using User.Domain.User.Validators;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using User.Application.Services;
 using User.Infrastructure.Services.Encryption;
 using User.Infrastructure.Services.TokenGeneration;
 using User.Infrastructure.Services.Validators;
@@ -18,7 +19,7 @@ namespace User.Infrastructure.Services
                 services
                     .AddScoped<IMailAddressValidator, MailAddressValidator>()
                     .AddScoped<IEncryptionService, EncryptionService>()
-                    .AddScoped<TokenGenerationService>()
+                    .AddScoped<ITokenGenerationService, TokenGenerationService>()
                     .Configure<EncryptionSettings>(configuration.GetSection(EncryptionSectionKey))
                     .Configure<TokenSettings>(configuration.GetSection(TokenSectionKey));
     }

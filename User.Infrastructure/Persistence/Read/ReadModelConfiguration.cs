@@ -4,8 +4,9 @@ using Core.Infrastructure.Persistence.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using User.Application.Dto.User;
 using User.Infrastructure.Persistence.Read.Context;
-using User.Infrastructure.Persistence.Read.Repositories.User;
+using User.Infrastructure.Persistence.Read.Repositories;
 
 namespace User.Infrastructure.Persistence.Read
 {
@@ -21,7 +22,7 @@ namespace User.Infrastructure.Persistence.Read
                         true,
                         UserContextConnectionStringSectionKey,
                         Assembly.GetExecutingAssembly().FullName)
-                    .AddScoped<IUserReadModelRepository, UserReadModelRepository>();
+                    .AddScoped<IUserDtoRepository, UserDtoRepository>();
 
         internal static IApplicationBuilder UseReadModelMiddlewares(this IApplicationBuilder builder) =>
             builder
