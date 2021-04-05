@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Core.Domain.Abstractions.BuildingBlocks;
 using User.Domain.User.Events;
 
@@ -40,7 +41,7 @@ namespace User.Domain.User
 
         public void ChangePassword(byte[] password)
         {
-            var areTheSame = Password == password;
+            var areTheSame = Password.SequenceEqual(password);
             
             if (areTheSame)
             {

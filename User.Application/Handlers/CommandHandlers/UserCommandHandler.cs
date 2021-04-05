@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using User.Domain.User.Services;
 using Core.Application.Abstractions.Messaging.Commands;
@@ -43,12 +44,12 @@ namespace User.Application.Handlers.CommandHandlers
             var user = await _userRepository.GetAsync(ownerId, cancellationToken);
             var isAuthenticated = _encryptionService.VerifyPassword(user.Password, command.Password);
 
-            if (isAuthenticated)
+            if (!isAuthenticated)
             {
-                await _userService.ChangeUserPasswordAsync(ownerId, command.NewPassword);
+                throw new UnauthorizedAccessException();
             }
-            
-            // ToDo: inform the client if not authenticated
+
+            await _userService.ChangeUserPasswordAsync(ownerId, command.NewPassword);
 
             return Unit.Value;
         }
