@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using User.Application.Contracts.User.Commands;
 using User.Application.Contracts.User.Queries;
 using User.Application.Dto.User;
+using User.Infrastructure.Authorization;
 using Controller = Core.Infrastructure.Mvc.Controller;
 
 namespace User.Api.Controllers
@@ -42,7 +43,7 @@ namespace User.Api.Controllers
         }
 
         [HttpGet("{userId}")]
-        [Authorize]
+        [Authorize(Policy = AuthorizationPolicies.ResourceOwnerIdentityConfirmationRequiredPolicy)]
         public async Task<ActionResult<UserDto>> GetUserAsync([FromRoute] Guid userId,
             CancellationToken cancellationToken)
         {
@@ -60,11 +61,25 @@ namespace User.Api.Controllers
         }
 
         [HttpPut("{userId}/password")]
-        [Authorize]
+        [Authorize(Policy = AuthorizationPolicies.ResourceOwnerIdentityConfirmationRequiredPolicy)]
         public async Task<IActionResult> ChangeUserPasswordAsync([FromBody] ChangeUserPasswordCommand command,
             CancellationToken cancellationToken)
         {
             command.ClaimsPrincipal = User;
+
+            await CommandBus.SendAsync(command, cancellationToken);
+
+            return Ok();
+        }
+
+        [HttpDelete("{userId}")]
+        [Authorize(Policy = AuthorizationPolicies.ResourceOwnerIdentityConfirmationRequiredPolicy)]
+        public async Task<IActionResult> DeleteUserAsync(CancellationToken cancellationToken)
+        {
+            var command = new DeleteUserCommand
+            {
+                ClaimsPrincipal = User
+            };
 
             await CommandBus.SendAsync(command, cancellationToken);
 

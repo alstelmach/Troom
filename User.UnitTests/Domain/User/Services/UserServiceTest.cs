@@ -84,7 +84,7 @@ namespace User.UnitTests.Domain.User.Services
                 .ReturnsAsync(UserFactory.Create(
                     id,
                     "astelmach",
-                    Array.Empty<byte>(),
+                    new byte[] { 1, 2, 3 },
                     "Aleksander",
                     "Stelmach",
                     "alstelmach@outlook.com"));

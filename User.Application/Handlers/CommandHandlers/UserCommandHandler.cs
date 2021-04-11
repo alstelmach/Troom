@@ -11,7 +11,8 @@ using User.Domain.User.Repositories;
 namespace User.Application.Handlers.CommandHandlers
 {
     public sealed class UserCommandHandler : ICommandHandler<CreateUserCommand>,
-        ICommandHandler<ChangeUserPasswordCommand>
+        ICommandHandler<ChangeUserPasswordCommand>,
+        ICommandHandler<DeleteUserCommand>
     {
         private readonly UserService _userService;
         private readonly IEncryptionService _encryptionService;
@@ -50,6 +51,17 @@ namespace User.Application.Handlers.CommandHandlers
             }
 
             await _userService.ChangeUserPasswordAsync(ownerId, command.NewPassword);
+
+            return Unit.Value;
+        }
+
+        public async Task<Unit> Handle(DeleteUserCommand command, CancellationToken cancellationToken)
+        {
+            var ownerId = command.ClaimsPrincipal.GetOwnerId();
+            var user = await _userRepository.GetAsync(ownerId, cancellationToken);
+
+            user.DeleteUser();
+            await _userRepository.UpdateAsync(user, cancellationToken);
 
             return Unit.Value;
         }

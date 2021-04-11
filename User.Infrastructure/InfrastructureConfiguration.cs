@@ -5,9 +5,12 @@ using User.Infrastructure.Persistence;
 using User.Infrastructure.Services;
 using Core.Infrastructure.Mvc;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using User.Infrastructure.Authorization;
+using User.Infrastructure.Authorization.Requirements;
 using User.Infrastructure.Persistence.Read;
 using User.Infrastructure.Services.TokenGeneration;
 
@@ -29,7 +32,8 @@ namespace User.Infrastructure
                     .RegisterPersistenceDependencies(configuration)
                     .AddMvcDependencies()
                     .RegisterInfrastructureServices(configuration)
-                    .AddJwtServices(configuration);
+                    .AddJwtServices(configuration)
+                    .AddAuthorizationServices();
 
         public static IApplicationBuilder UseInfrastructureMiddlewares(this IApplicationBuilder builder) =>
             builder
@@ -47,5 +51,18 @@ namespace User.Infrastructure
             return services
                 .RegisterIdentityDependencies(encodedKey);
         }
+
+        private static IServiceCollection AddAuthorizationServices(this IServiceCollection services) =>
+            services
+                .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
+                .AddAuthorization(options =>
+                    options.AddPolicy(
+                        AuthorizationPolicies.ResourceOwnerIdentityConfirmationRequiredPolicy,
+                        policy =>
+                            policy
+                                .Requirements
+                                .Add(
+                                    new ResourceOwnerIdentityRequirement(
+                                        services.BuildServiceProvider()))));
     }
 }

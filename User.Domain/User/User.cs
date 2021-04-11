@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Core.Domain.Abstractions.BuildingBlocks;
+using User.Domain.User.Enumerations;
 using User.Domain.User.Events;
+using User.Domain.User.Exceptions;
 
 namespace User.Domain.User
 {
@@ -38,18 +40,25 @@ namespace User.Domain.User
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
         public string MailAddress { get; private set; }
+        public UserStatus Status { get; private set; }
 
         public void ChangePassword(byte[] password)
         {
             var areTheSame = Password.SequenceEqual(password);
-            
+
             if (areTheSame)
             {
-                return;
+                throw new PasswordVirtualChangeException();
             }
 
             Password = password;
             Enqueue(new PasswordChangedDomainEvent(Id, Password));
+        }
+
+        public void DeleteUser()
+        {
+            Status = UserStatus.Deleted;
+            Enqueue(new UserDeletedDomainEvent(Id));
         }
 
         private void Apply(UserCreatedDomainEvent @event)
@@ -64,5 +73,8 @@ namespace User.Domain.User
 
         private void Apply(PasswordChangedDomainEvent @event) =>
             Password = @event.NewPassword;
+
+        private void Apply(UserDeletedDomainEvent @event) =>
+            Status = UserStatus.Deleted;
     }
 }

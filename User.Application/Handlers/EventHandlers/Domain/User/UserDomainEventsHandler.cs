@@ -8,7 +8,8 @@ using User.Application.Dto.User;
 namespace User.Application.Handlers.EventHandlers.Domain.User
 {
     public sealed class UserDomainEventsHandler : IDomainEventHandler<UserCreatedDomainEvent>,
-        IDomainEventHandler<PasswordChangedDomainEvent>
+        IDomainEventHandler<PasswordChangedDomainEvent>,
+        IDomainEventHandler<UserDeletedDomainEvent>
     {
         private readonly IIntegrationEventPublisher _integrationEventPublisher;
         private readonly IUserDtoRepository _userDtoRepository;
@@ -40,6 +41,12 @@ namespace User.Application.Handlers.EventHandlers.Domain.User
 
             user.Password = @event.NewPassword;
             await _userDtoRepository.UpdateAsync(user);
+        }
+        
+        public async Task Handle(UserDeletedDomainEvent @event, CancellationToken cancellationToken)
+        {
+            var userDto = await _userDtoRepository.GetAsync(@event.EntityId, cancellationToken);
+            await _userDtoRepository.DeleteAsync(userDto);
         }
 
         private async Task SaveUserDtoAsync(UserCreatedDomainEvent @event)
