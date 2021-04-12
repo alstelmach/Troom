@@ -28,7 +28,7 @@ namespace User.Application.Handlers.QueryHandlers
             CancellationToken cancellationToken)
         {
             var authenticationResult = new AuthenticationResultDto();
-            var user = await _userRepository.GetAsync(query.Login, cancellationToken);
+            var user = await _userRepository.GetAsync(query.Login, false, cancellationToken);
             var doesNotExist = user is null;
 
             if (doesNotExist)

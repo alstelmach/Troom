@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using User.Domain.Role.Factories;
 using User.Domain.User.Events;
 using User.Domain.User.Exceptions;
 using User.Domain.User.Factories;
@@ -73,6 +75,76 @@ namespace User.UnitTests.Domain.User
             Assert.Contains(user.DequeueDomainEvents(),
                 @event => 
                     @event.GetType().Equals(typeof(UserDeletedDomainEvent)));
+        }
+
+        [Fact]
+        public static void ShouldAssignRoleToUser()
+        {
+            // Arrange
+            var user = UserFactory.Create(
+                Guid.NewGuid(),
+                "astelmach",
+                new byte[] { 1, 2, 3, 4 },
+                "Aleksander",
+                "Stelmach",
+                "alstelmach@outlook.com");
+
+            var roleId = Guid.NewGuid();
+            var role = RoleFactory.Create(roleId, string.Empty);
+
+            // Act
+            user.AssignRole(role);
+
+            // Assert
+            Assert.Contains(user.Roles,
+                role => role == roleId);
+        }
+
+        [Fact]
+        public static void ShouldNotDuplicateAssignedRole()
+        {
+            // Arrange
+            var user = UserFactory.Create(
+                Guid.NewGuid(),
+                "astelmach",
+                new byte[] { 1, 2, 3, 4 },
+                "Aleksander",
+                "Stelmach",
+                "alstelmach@outlook.com");
+
+            var roleId = Guid.NewGuid();
+            var assignedRole = RoleFactory.Create(roleId, string.Empty);
+            user.AssignRole(assignedRole);
+
+            var anotherRole = RoleFactory.Create(roleId, string.Empty);
+
+            // Act
+            void AssignAction() => user.AssignRole(anotherRole);
+
+            // Assert
+            Assert.Throws<RoleAlreadyAssignedToUserException>(AssignAction);
+        }
+        
+        [Fact]
+        public static void ShouldDenyUserRole()
+        {
+            // Arrange
+            var user = UserFactory.Create(
+                Guid.NewGuid(),
+                "astelmach",
+                new byte[] { 1, 2, 3, 4 },
+                "Aleksander",
+                "Stelmach",
+                "alstelmach@outlook.com");
+
+            var assignedRole = RoleFactory.Create(Guid.NewGuid(), string.Empty);
+            user.AssignRole(assignedRole);
+
+            // Act
+            user.DenyRole(assignedRole);
+
+            // Assert
+            Assert.Empty(user.Roles);
         }
     }
 }

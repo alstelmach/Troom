@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Core.Domain.Abstractions.BuildingBlocks;
 using User.Domain.User.Enumerations;
@@ -41,6 +42,7 @@ namespace User.Domain.User
         public string LastName { get; private set; }
         public string MailAddress { get; private set; }
         public UserStatus Status { get; private set; }
+        public IReadOnlyCollection<Guid> Roles { get; private set; } = new List<Guid>();
 
         public void ChangePassword(byte[] password)
         {
@@ -61,6 +63,35 @@ namespace User.Domain.User
             Enqueue(new UserDeletedDomainEvent(Id));
         }
 
+        public void AssignRole(Role.Role role)
+        {
+            var isAlreadyAssigned = Roles
+                .Any(assignedRole =>
+                    assignedRole == role.Id);
+
+            if (isAlreadyAssigned)
+            {
+                throw new RoleAlreadyAssignedToUserException(role.Id, Id);
+            }
+
+            AssignRole(role.Id);
+            Enqueue(new RoleAssignedToUserDomainEvent(Id, role.Id));
+        }
+
+        public void DenyRole(Role.Role role)
+        {
+            var rolesCount = Roles.Count;
+
+            DenyRole(role.Id);
+
+            var hasBeenDenied = rolesCount == Roles.Count + 1;
+
+            if (hasBeenDenied)
+            {
+                Enqueue(new RoleDeniedFromUserDomainEvent(Id, role.Id));
+            }
+        }
+
         private void Apply(UserCreatedDomainEvent @event)
         {
             Id = @event.EntityId;
@@ -76,5 +107,24 @@ namespace User.Domain.User
 
         private void Apply(UserDeletedDomainEvent @event) =>
             Status = UserStatus.Deleted;
+
+        private void Apply(RoleAssignedToUserDomainEvent @event) =>
+            AssignRole(@event.RoleId);
+
+        private void Apply(RoleDeniedFromUserDomainEvent @event) =>
+            DenyRole(@event.RoleId);
+
+        private void AssignRole(Guid roleId)
+        {
+            var mutableRolesList = Roles.ToList();
+            mutableRolesList.Add(roleId);
+            Roles = mutableRolesList;
+        }
+
+        private void DenyRole(Guid roleId) =>
+            Roles = Roles
+                .Where(assignedRole =>
+                    assignedRole != roleId)
+                .ToList();
     }
 }

@@ -40,6 +40,10 @@ namespace User.Infrastructure.Persistence.Read.Configuration
                 .Property(user => user.MailAddress)
                 .HasColumnType("varchar(100)")
                 .IsRequired();
+
+            builder
+                .HasMany(user => user.Roles)
+                .WithMany(role => role.Users);
         }
     }
 }

@@ -17,6 +17,6 @@ namespace User.Application.Handlers.QueryHandlers
 
         public async Task<UserDto> Handle(GetUserQuery query, CancellationToken cancellationToken) =>
             await _userDtoRepository
-                .GetAsync(query.Id, cancellationToken);
+                .GetAsync(query.Id, false, cancellationToken);
     }
 }

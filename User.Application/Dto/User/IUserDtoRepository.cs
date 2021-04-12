@@ -7,7 +7,7 @@ namespace User.Application.Dto.User
 {
     public interface IUserDtoRepository : IReadModelRepository<UserDto>
     {
-        Task<UserDto> GetAsync(string login, CancellationToken cancellationToken = default);
-        Task<UserDto> GetAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<UserDto> GetAsync(string login, bool includeRoles = false, CancellationToken cancellationToken = default);
+        Task<UserDto> GetAsync(Guid id, bool includeRoles = false, CancellationToken cancellationToken = default);
     }
 }

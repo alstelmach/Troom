@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
+using User.Application.Dto.Role;
 
 namespace User.Application.Dto.User
 {
@@ -29,5 +31,7 @@ namespace User.Application.Dto.User
         public string FirstName { get; }
         public string LastName { get; }
         public string MailAddress { get; }
+        [JsonIgnore]
+        public ICollection<RoleDto> Roles { get; set; } = new List<RoleDto>();
     }
 }

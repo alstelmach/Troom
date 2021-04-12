@@ -23,8 +23,8 @@ namespace User.Domain.Role
         public void AssignPermission(Permission.Permission permission)
         {
             var isAlreadyAssigned = Permissions
-                .Any(privilege =>
-                    privilege == permission.Id);
+                .Any(assignedPermission =>
+                    assignedPermission == permission.Id);
 
             if (isAlreadyAssigned)
             {

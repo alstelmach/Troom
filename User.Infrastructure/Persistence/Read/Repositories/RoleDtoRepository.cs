@@ -26,5 +26,17 @@ namespace User.Infrastructure.Persistence.Read.Repositories
                 .Set<RolePermissionAssignment>()
                 .AddAsync(assignment, cancellationToken);
         }
+
+        public async Task<RoleDto> GetAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            var sqlQuery =
+                "SELECT \"Id\", \"Name\" "
+                + $"FROM \"{UserReadModelContext.SchemaName}\".\"Roles\" "
+                + "LIMIT 1";
+
+            var user = await QueryFirstOrDefaultAsync(sqlQuery);
+
+            return user;
+        }
     }
 }
