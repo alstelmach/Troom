@@ -30,7 +30,7 @@ namespace User.Infrastructure.Persistence.Read.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("RoleDtoUserDto");
+                    b.ToTable("UserRoleAssignments");
                 });
 
             modelBuilder.Entity("User.Application.Dto.Role.RoleDto", b =>
@@ -45,7 +45,7 @@ namespace User.Infrastructure.Persistence.Read.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", "UserRead");
+                    b.ToTable("Roles", "userreadmodel");
                 });
 
             modelBuilder.Entity("User.Application.Dto.User.UserDto", b =>
@@ -75,18 +75,20 @@ namespace User.Infrastructure.Persistence.Read.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", "UserRead");
+                    b.ToTable("Users", "userreadmodel");
                 });
 
             modelBuilder.Entity("User.Infrastructure.Persistence.Read.Entities.RolePermissionAssignment", b =>
                 {
-                    b.Property<Guid>("PermissionId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uuid");
 
-                    b.ToTable("PermissionRoleAssignments", "UserRead");
+                    b.Property<Guid>("PermissionId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("RoleId", "PermissionId");
+
+                    b.ToTable("PermissionRoleAssignments", "userreadmodel");
                 });
 
             modelBuilder.Entity("RoleDtoUserDto", b =>

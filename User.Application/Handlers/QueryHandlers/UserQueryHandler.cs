@@ -3,8 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Core.Application.Abstractions.Messaging.Queries;
 using User.Application.Contracts.User.Queries;
-using User.Application.Dto.Role;
-using User.Application.Dto.User;
+using User.Application.Dto;
+using User.Application.Dto.Repositories;
 
 namespace User.Application.Handlers.QueryHandlers
 {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using User.Domain.Role.Factories;
 using User.Domain.User.Events;
 using User.Domain.User.Exceptions;

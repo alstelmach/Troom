@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using User.Application.Dto.User;
+using User.Application.Dto;
 using User.Infrastructure.Persistence.Read.Context;
 
 namespace User.Infrastructure.Persistence.Read.Configuration
@@ -43,7 +43,8 @@ namespace User.Infrastructure.Persistence.Read.Configuration
 
             builder
                 .HasMany(user => user.Roles)
-                .WithMany(role => role.Users);
+                .WithMany(role => role.Users)
+                .UsingEntity(assignment => assignment.ToTable("UserRoleAssignments"));
         }
     }
 }

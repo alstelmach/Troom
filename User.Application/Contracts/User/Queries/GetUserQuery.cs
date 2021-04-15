@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Claims;
 using Core.Application.Abstractions.Messaging.Queries;
-using User.Application.Dto.User;
+using User.Application.Dto;
 
 namespace User.Application.Contracts.User.Queries
 {

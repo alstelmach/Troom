@@ -5,23 +5,21 @@ namespace User.IntegrationEvents.User
 {
     public sealed class UserCreatedIntegrationEvent : IntegrationEvent
     {
-        public UserCreatedIntegrationEvent(Guid entityId,
+        public UserCreatedIntegrationEvent(Guid id,
             string login,
-            byte[] password,
             string firstName,
             string lastName,
             string mailAddress)
-                : base(entityId, nameof(UserCreatedIntegrationEvent))
+                : base(id,
+                    nameof(UserCreatedIntegrationEvent))
         {
             Login = login;
-            Password = password;
             FirstName = firstName;
             LastName = lastName;
             MailAddress = mailAddress;
         }
 
         public string Login { get; }
-        public byte[] Password { get; }
         public string FirstName { get; }
         public string LastName { get; }
         public string MailAddress { get; }

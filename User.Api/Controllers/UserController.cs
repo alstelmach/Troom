@@ -8,8 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using User.Application.Contracts.User.Commands;
 using User.Application.Contracts.User.Queries;
-using User.Application.Dto.Role;
-using User.Application.Dto.User;
+using User.Application.Dto;
 using User.Infrastructure.Authorization;
 using Controller = Core.Infrastructure.Mvc.Controller;
 
@@ -45,7 +44,7 @@ namespace User.Api.Controllers
         }
 
         [HttpPost("{userId}/roles")]
-        // ToDo: only for admin
+        [Authorize(Policy = AuthorizationPolicies.AdministrativePrivilegesRequiredPolicy)]
         public async Task<IActionResult> AssignUserRoleAsync([FromRoute] Guid userId,
             [FromBody] AssignRoleToUserCommand command,
             CancellationToken cancellationToken)
@@ -59,7 +58,7 @@ namespace User.Api.Controllers
         }
 
         [HttpGet]
-        // ToDo: only for admin
+        [Authorize(Policy = AuthorizationPolicies.AdministrativePrivilegesRequiredPolicy)]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsersAsync(CancellationToken cancellationToken)
         {
             var query = new GetUsersQuery
@@ -91,7 +90,7 @@ namespace User.Api.Controllers
         }
 
         [HttpGet("{userId}/roles")]
-        // ToDo: Only for admin
+        [Authorize(Policy = AuthorizationPolicies.AdministrativePrivilegesRequiredPolicy)]
         public async Task<ActionResult<IEnumerable<RoleDto>>> GetUserRolesAsync([FromRoute] Guid userId,
             CancellationToken cancellationToken)
         {
@@ -133,7 +132,7 @@ namespace User.Api.Controllers
         }
 
         [HttpDelete("{userId}/roles")]
-        // ToDo: Only for admin
+        [Authorize(Policy = AuthorizationPolicies.AdministrativePrivilegesRequiredPolicy)]
         public async Task<IActionResult> DenyUserRoleAsync([FromRoute] Guid userId,
             [FromBody] DenyUserRoleCommand command,
             CancellationToken cancellationToken)

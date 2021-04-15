@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using User.Application.Dto.Role;
+using User.Application.Dto;
 using User.Infrastructure.Persistence.Read.Context;
 
 namespace User.Infrastructure.Persistence.Read.Configuration

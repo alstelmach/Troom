@@ -10,8 +10,8 @@ using User.Infrastructure.Persistence.Read.Context;
 namespace User.Infrastructure.Persistence.Read.Migrations
 {
     [DbContext(typeof(UserReadModelContext))]
-    [Migration("20210411133539_CreatedRoleDtoTable")]
-    partial class CreatedRoleDtoTable
+    [Migration("20210414204837_CreatedInitialReadModel")]
+    partial class CreatedInitialReadModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,21 @@ namespace User.Infrastructure.Persistence.Read.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+            modelBuilder.Entity("RoleDtoUserDto", b =>
+                {
+                    b.Property<Guid>("RolesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UsersId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("RolesId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("UserRoleAssignments");
+                });
 
             modelBuilder.Entity("User.Application.Dto.Role.RoleDto", b =>
                 {
@@ -33,7 +48,7 @@ namespace User.Infrastructure.Persistence.Read.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", "UserRead");
+                    b.ToTable("Roles", "userreadmodel");
                 });
 
             modelBuilder.Entity("User.Application.Dto.User.UserDto", b =>
@@ -63,7 +78,35 @@ namespace User.Infrastructure.Persistence.Read.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", "UserRead");
+                    b.ToTable("Users", "userreadmodel");
+                });
+
+            modelBuilder.Entity("User.Infrastructure.Persistence.Read.Entities.RolePermissionAssignment", b =>
+                {
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("PermissionId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("RoleId", "PermissionId");
+
+                    b.ToTable("PermissionRoleAssignments", "userreadmodel");
+                });
+
+            modelBuilder.Entity("RoleDtoUserDto", b =>
+                {
+                    b.HasOne("User.Application.Dto.Role.RoleDto", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("User.Application.Dto.User.UserDto", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

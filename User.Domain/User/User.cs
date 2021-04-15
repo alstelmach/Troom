@@ -16,7 +16,7 @@ namespace User.Domain.User
             string firstName,
             string lastName,
             string mailAddress)
-            : base(id)
+                : base(id)
         {
             Login = login;
             Password = password;
@@ -28,7 +28,8 @@ namespace User.Domain.User
                 Password,
                 FirstName,
                 LastName,
-                MailAddress));
+                MailAddress,
+                Status));
         }
 
         private User()
@@ -41,7 +42,7 @@ namespace User.Domain.User
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
         public string MailAddress { get; private set; }
-        public UserStatus Status { get; private set; }
+        public UserStatus Status { get; private set; } = UserStatus.Active;
         public IReadOnlyCollection<Guid> Roles { get; private set; } = new List<Guid>();
 
         public void ChangePassword(byte[] password)
@@ -88,7 +89,7 @@ namespace User.Domain.User
 
             if (hasBeenDenied)
             {
-                Enqueue(new RoleDeniedFromUserDomainEvent(Id, role.Id));
+                Enqueue(new UserRoleDeniedDomainEvent(Id, role.Id));
             }
         }
 
@@ -100,6 +101,7 @@ namespace User.Domain.User
             FirstName = @event.FirstName;
             LastName = @event.LastName;
             MailAddress = @event.MailAddress;
+            Status = UserStatus.Active;
         }
 
         private void Apply(PasswordChangedDomainEvent @event) =>
@@ -111,7 +113,7 @@ namespace User.Domain.User
         private void Apply(RoleAssignedToUserDomainEvent @event) =>
             AssignRole(@event.RoleId);
 
-        private void Apply(RoleDeniedFromUserDomainEvent @event) =>
+        private void Apply(UserRoleDeniedDomainEvent @event) =>
             DenyRole(@event.RoleId);
 
         private void AssignRole(Guid roleId)

@@ -1,5 +1,6 @@
 ﻿using System;
 using Core.Domain.Abstractions.BuildingBlocks;
+using User.Domain.User.Enumerations;
 
 namespace User.Domain.User.Events
 {
@@ -10,14 +11,23 @@ namespace User.Domain.User.Events
             byte[] password,
             string firstName,
             string lastName,
-            string mailAddress)
-                : base(entityId) =>
-                    (Login, Password, FirstName, LastName, MailAddress) = (login, password, firstName, lastName, mailAddress);
-        
+            string mailAddress,
+            UserStatus userStatus)
+                : base(entityId)
+        {
+            Login = login;
+            Password = password;
+            FirstName = firstName;
+            LastName = lastName;
+            MailAddress = mailAddress;
+            Status = userStatus;
+        }
+
         public string Login { get; }
         public byte[] Password { get; }
         public string FirstName { get; }
         public string LastName { get; }
         public string MailAddress { get; }
+        public UserStatus Status { get; } 
     }
 }

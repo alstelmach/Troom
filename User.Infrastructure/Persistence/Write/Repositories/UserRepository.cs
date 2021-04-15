@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using User.Domain.User.Repositories;
@@ -28,11 +26,5 @@ namespace User.Infrastructure.Persistence.Write.Repositories
 
             return returnValue;
         }
-
-        public new async Task<IEnumerable<Domain.User.User>> GetAsync(CancellationToken cancellationToken) =>
-            (await EventStore
-                .GetAsync<Domain.User.User>(cancellationToken))
-                .Where(user =>
-                    user.Status != UserStatus.Deleted);
     }
 }

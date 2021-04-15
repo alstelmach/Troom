@@ -10,7 +10,7 @@ namespace User.Domain.Role.Exceptions
 
         internal PermissionAlreadyAssignedToRoleException(Guid permissionId,
             Guid roleId)
-            : base(string.Format(MessagePattern, permissionId, roleId))
+                : base(string.Format(MessagePattern, permissionId, roleId))
         {
         }
     }

@@ -13,7 +13,7 @@ namespace User.Infrastructure.Persistence.Read.Configuration
         {
             builder
                 .ToTable(TableName, UserReadModelContext.SchemaName)
-                .HasNoKey();
+                .HasKey(assignment => new { assignment.RoleId, assignment.PermissionId });
 
             builder
                 .Property(assignment => assignment.PermissionId)

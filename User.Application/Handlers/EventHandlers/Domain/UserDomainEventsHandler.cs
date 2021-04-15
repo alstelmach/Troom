@@ -2,8 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Core.Application.Abstractions.Messaging.Events;
-using User.Application.Dto.Role;
-using User.Application.Dto.User;
+using User.Application.Dto;
+using User.Application.Dto.Repositories;
 using User.Domain.User.Events;
 using User.IntegrationEvents.User;
 
@@ -13,7 +13,7 @@ namespace User.Application.Handlers.EventHandlers.Domain
         IDomainEventHandler<PasswordChangedDomainEvent>,
         IDomainEventHandler<UserDeletedDomainEvent>,
         IDomainEventHandler<RoleAssignedToUserDomainEvent>,
-        IDomainEventHandler<RoleDeniedFromUserDomainEvent>
+        IDomainEventHandler<UserRoleDeniedDomainEvent>
     {
         private readonly IIntegrationEventPublisher _integrationEventPublisher;
         private readonly IUserDtoRepository _userDtoRepository;
@@ -34,7 +34,6 @@ namespace User.Application.Handlers.EventHandlers.Domain
             
             var integrationEvent = new UserCreatedIntegrationEvent(@event.EntityId,
                 @event.Login,
-                @event.Password,
                 @event.FirstName,
                 @event.LastName,
                 @event.MailAddress);
@@ -44,39 +43,38 @@ namespace User.Application.Handlers.EventHandlers.Domain
 
         public async Task Handle(PasswordChangedDomainEvent @event, CancellationToken cancellationToken)
         {
-            var user = await _userDtoRepository.GetAsync(@event.EntityId, false, cancellationToken);
+            await UpdatePasswordAsync(@event);
 
-            user.Password = @event.NewPassword;
-            await _userDtoRepository.UpdateAsync(user);
+            var integrationEvent = new PasswordChangedIntegrationEvent(@event.EntityId);
+
+            await _integrationEventPublisher.PublishAsync(integrationEvent);
         }
         
         public async Task Handle(UserDeletedDomainEvent @event, CancellationToken cancellationToken)
         {
-            var userDto = await _userDtoRepository.GetAsync(@event.EntityId, false, cancellationToken);
-            await _userDtoRepository.DeleteAsync(userDto);
+            await DeleteUserDtoAsync(@event);
+
+            var integrationEvent = new UserDeletedIntegrationEvent(@event.EntityId);
+
+            await _integrationEventPublisher.PublishAsync(integrationEvent);
         }
 
         public async Task Handle(RoleAssignedToUserDomainEvent @event, CancellationToken cancellationToken)
         {
-            var userDto = await _userDtoRepository.GetAsync(@event.EntityId, false, cancellationToken);
-            var roleDto = await _roleDtoRepository.GetAsync(@event.RoleId, cancellationToken);
+            await AssignRoleToUserDtoAsync(@event);
 
-            userDto.Roles.Add(roleDto);
+            var integrationEvent = new RoleAssignedToUserIntegrationEvent(@event.EntityId, @event.RoleId);
 
-            await _userDtoRepository.UpdateAsync(userDto);
+            await _integrationEventPublisher.PublishAsync(integrationEvent);
         }
 
-        public async Task Handle(RoleDeniedFromUserDomainEvent @event, CancellationToken cancellationToken)
+        public async Task Handle(UserRoleDeniedDomainEvent @event, CancellationToken cancellationToken)
         {
-            var userDto = await _userDtoRepository.GetAsync(@event.EntityId, true, cancellationToken);
+            await DenyUserDtoRoleAsync(@event);
 
-            userDto.Roles = userDto
-                .Roles
-                .Where(role =>
-                    role.Id != @event.RoleId)
-                .ToList();
+            var integrationEvent = new UserRoleDeniedIntegrationEvent(@event.EntityId, @event.RoleId);
 
-            await _userDtoRepository.UpdateAsync(userDto);
+            await _integrationEventPublisher.PublishAsync(integrationEvent);
         }
 
         private async Task SaveUserDtoAsync(UserCreatedDomainEvent @event)
@@ -89,6 +87,44 @@ namespace User.Application.Handlers.EventHandlers.Domain
                 @event.MailAddress);
 
             await _userDtoRepository.CreateAsync(user);
+        }
+
+        private async Task UpdatePasswordAsync(PasswordChangedDomainEvent @event)
+        {
+            var user = await _userDtoRepository.GetAsync(@event.EntityId);
+
+            user.Password = @event.NewPassword;
+
+            await _userDtoRepository.UpdateAsync(user);
+        }
+
+        private async Task DeleteUserDtoAsync(UserDeletedDomainEvent @event)
+        {
+            var userDto = await _userDtoRepository.GetAsync(@event.EntityId);
+            await _userDtoRepository.DeleteAsync(userDto);
+        }
+
+        private async Task AssignRoleToUserDtoAsync(RoleAssignedToUserDomainEvent @event)
+        {
+            var userDto = await _userDtoRepository.GetAsync(@event.EntityId);
+            var roleDto = await _roleDtoRepository.GetAsync(@event.RoleId);
+
+            userDto.Roles.Add(roleDto);
+
+            await _userDtoRepository.UpdateAsync(userDto);
+        }
+
+        private async Task DenyUserDtoRoleAsync(UserRoleDeniedDomainEvent @event)
+        {
+            var userDto = await _userDtoRepository.GetAsync(@event.EntityId, true);
+
+            userDto.Roles = userDto
+                .Roles
+                .Where(role =>
+                    role.Id != @event.RoleId)
+                .ToList();
+
+            await _userDtoRepository.UpdateAsync(userDto);
         }
     }
 }

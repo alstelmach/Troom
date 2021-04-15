@@ -1,10 +1,10 @@
+using System;
 using Core.Infrastructure.HealthCheck;
 using Core.Infrastructure.Identity;
 using Core.Infrastructure.Mvc;
 using User.Domain;
 using Core.Utilities.Swagger;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using User.Application;
@@ -28,14 +28,15 @@ namespace User.Api
                 .RegisterInfrastructureDependencies(_configuration)
                 .AddSwagger(_configuration);
 
-        public void Configure(IApplicationBuilder applicationBuilder, IWebHostEnvironment env) =>
-            applicationBuilder
-                .UseSwaggerMiddleware(_configuration)
-                .UseInfrastructureMiddlewares()
-                .UseHealthChecksMiddleware()
-                .UseHttpsRedirection()
-                .UseRouting()
-                .UseIdentityMiddlewares()
-                .UseEndpointsMiddleware();
+        public void Configure(IApplicationBuilder applicationBuilder,
+            IServiceProvider serviceProvider) =>
+                applicationBuilder
+                    .UseSwaggerMiddleware(_configuration)
+                    .UseInfrastructureMiddlewares(serviceProvider)
+                    .UseHealthChecksMiddleware()
+                    .UseHttpsRedirection()
+                    .UseRouting()
+                    .UseIdentityMiddlewares()
+                    .UseEndpointsMiddleware();
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using Core.Infrastructure.Identity;
 using User.Infrastructure.Messaging;
 using User.Infrastructure.Persistence;
@@ -20,6 +21,8 @@ namespace User.Infrastructure
     {
         private const string TokenSectionKey = "TokenSettings";
         private const string SelfCheckName = "Self-check";
+        private const int MajorVersion = 1;
+        private const int MinorVersion = 0;
 
         public static IServiceCollection RegisterInfrastructureDependencies(
             this IServiceCollection serviceCollection,
@@ -30,14 +33,16 @@ namespace User.Infrastructure
                     .Services
                     .RegisterMessagingDependencies(configuration)
                     .RegisterPersistenceDependencies(configuration)
-                    .AddMvcDependencies()
+                    .AddMvcDependencies(MajorVersion, MinorVersion)
                     .RegisterInfrastructureServices(configuration)
                     .AddJwtServices(configuration)
                     .AddAuthorizationServices();
 
-        public static IApplicationBuilder UseInfrastructureMiddlewares(this IApplicationBuilder builder) =>
-            builder
-                .UseReadModelMiddlewares();
+        public static IApplicationBuilder UseInfrastructureMiddlewares(this IApplicationBuilder builder,
+            IServiceProvider serviceProvider) =>
+                builder
+                    .UseReadModelMiddlewares()
+                    .Seed(serviceProvider);
 
         private static IServiceCollection AddJwtServices(this IServiceCollection services,
             IConfiguration configuration)
@@ -56,6 +61,7 @@ namespace User.Infrastructure
             services
                 .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
                 .AddAuthorization(options =>
+                {
                     options.AddPolicy(
                         AuthorizationPolicies.ResourceOwnerIdentityConfirmationRequiredPolicy,
                         policy =>
@@ -63,6 +69,16 @@ namespace User.Infrastructure
                                 .Requirements
                                 .Add(
                                     new ResourceOwnerIdentityRequirement(
-                                        services.BuildServiceProvider()))));
+                                        services.BuildServiceProvider())));
+
+                    options.AddPolicy(
+                        AuthorizationPolicies.AdministrativePrivilegesRequiredPolicy,
+                        policy =>
+                            policy
+                                .Requirements
+                                .Add(
+                                    new RolesManagementPermittedRequirement(
+                                        services.BuildServiceProvider())));
+                });
     }
 }

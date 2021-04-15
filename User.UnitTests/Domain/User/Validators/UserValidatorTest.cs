@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 using User.Domain.User.Exceptions;
@@ -22,14 +21,15 @@ namespace User.UnitTests.Domain.User.Validators
                 _userRepositoryMock.Object,
                 _mailAddressValidator.Object);
             
-            _userRepositoryMock
-                .Setup(repo =>
-                    repo.GetAsync(CancellationToken.None))
-                .ReturnsAsync(new[]
-                {
-                    UserFactory.Create(Guid.NewGuid(), "jkowal", Array.Empty<byte>(), "Jan", "Kowalski", "jkowal@gmail.com"),
-                    UserFactory.Create(Guid.NewGuid(), "ajaworek", Array.Empty<byte>(), "Adam", "Jaworek", "ajaworek@gmail.com"),
-                });
+            // ToDo: clean up after implementation
+            // _userRepositoryMock
+            //     .Setup(repo =>
+            //         repo.GetAsync(CancellationToken.None))
+            //     .ReturnsAsync(new[]
+            //     {
+            //         UserFactory.Create(Guid.NewGuid(), "jkowal", Array.Empty<byte>(), "Jan", "Kowalski", "jkowal@gmail.com"),
+            //         UserFactory.Create(Guid.NewGuid(), "ajaworek", Array.Empty<byte>(), "Adam", "Jaworek", "ajaworek@gmail.com"),
+            //     });
 
             _mailAddressValidator
                 .Setup(validator =>

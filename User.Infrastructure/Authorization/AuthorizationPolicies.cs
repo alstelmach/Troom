@@ -4,5 +4,7 @@
     {
         public const string ResourceOwnerIdentityConfirmationRequiredPolicy =
             "ResourceOwnerIdentityConfirmationRequiredPolicy";
+
+        public const string AdministrativePrivilegesRequiredPolicy = "AdministrativePrivilegesRequiredPolicy";
     }
 }

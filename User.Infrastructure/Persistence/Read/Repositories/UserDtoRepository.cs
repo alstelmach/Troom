@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Core.Infrastructure.Persistence.BuildingBlocks;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
-using User.Application.Dto.Role;
-using User.Application.Dto.User;
+using User.Application.Dto;
+using User.Application.Dto.Repositories;
 using User.Infrastructure.Persistence.Read.Context;
 
 namespace User.Infrastructure.Persistence.Read.Repositories
@@ -26,7 +26,7 @@ namespace User.Infrastructure.Persistence.Read.Repositories
                 "SELECT \"Id\", \"Login\", \"Password\", \"FirstName\", \"LastName\", \"MailAddress\" "
                 + $"FROM \"{UserReadModelContext.SchemaName}\".\"Users\"";
 
-            var users = await QueryAsync(sqlQuery);
+            var users = await QueryAsync(sqlQuery, cancellationToken);
 
             return users;
         }
@@ -43,7 +43,7 @@ namespace User.Infrastructure.Persistence.Read.Repositories
 
             var user = includeRoles
                 ? GetUserIncludingRoles(sqlQuery)
-                : await QueryFirstOrDefaultAsync(sqlQuery);
+                : await QueryFirstOrDefaultAsync(sqlQuery, cancellationToken);
 
             return user;
         }
@@ -52,16 +52,38 @@ namespace User.Infrastructure.Persistence.Read.Repositories
             bool includeRoles = false,
             CancellationToken cancellationToken = default)
         {
-            var sqlQuery = "SELECT \"Id\", \"Login\", \"Password\", \"FirstName\", \"LastName\", \"MailAddress\" "
+            var sqlQuery =
+                "SELECT \"Id\", \"Login\", \"Password\", \"FirstName\", \"LastName\", \"MailAddress\" "
                 + $"FROM \"{UserReadModelContext.SchemaName}\".\"Users\" "
                 + $"WHERE \"Id\" = '{id}' "
                 + "LIMIT 1";
 
             var user = includeRoles
                 ? GetUserIncludingRoles(sqlQuery)
-                : await QueryFirstOrDefaultAsync(sqlQuery);
+                : await QueryFirstOrDefaultAsync(sqlQuery, cancellationToken);
 
             return user;
+        }
+
+        public async Task<bool> CheckIsAuthorized(Guid userId,
+            Guid permissionId,
+            CancellationToken cancellationToken = default)
+        {
+            var sqlQuery =
+                "SELECT COUNT(*) "
+                + $"FROM \"{UserReadModelContext.SchemaName}\".\"PermissionRoleAssignments\" permissionRoleAssignments "
+                + $"INNER JOIN \"{UserReadModelContext.SchemaName}\".\"UserRoleAssignments\" userRoleAssignments "
+                + "ON permissionRoleAssignments.\"RoleId\" = userRoleAssignments.\"RolesId\" "
+                + $"WHERE userRoleAssignments.\"UsersId\" = '{UserReadModelContext.SchemaName}' "
+                + $"AND permissionRoleAssignments.\"PermissionId\" = '{UserReadModelContext.SchemaName}' "
+                + "LIMIT 1";
+
+            var isAuthorized = await DbContext
+                .Database
+                .GetDbConnection()
+                .QueryFirstOrDefaultAsync<bool>(sqlQuery, cancellationToken);
+
+            return isAuthorized;
         }
 
         private UserDto GetUserIncludingRoles(string sqlQuery) =>

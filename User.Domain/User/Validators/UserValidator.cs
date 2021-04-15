@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using User.Domain.User.Exceptions;
@@ -33,10 +32,12 @@ namespace User.Domain.User.Validators
         
         private async Task<bool> BeAUniqueLoginAsync(string login, CancellationToken cancellationToken)
         {
-            var users = await _userRepository.GetAsync(cancellationToken);
-            var isUnique = users.All(user => user.Login != login);
-            
-            return isUnique;
+            // ToDo: implement
+            // var users = await _userRepository.GetAsync(cancellationToken);
+            // var isUnique = users.All(user => user.Login != login);
+            // 
+            // return isUnique;
+            return true;
         }
 
         private bool BeAValidMailAddress(string mailAddress) =>
@@ -44,10 +45,12 @@ namespace User.Domain.User.Validators
 
         private async Task<bool> BeAUniqueMailAddressAsync(string mailAddress, CancellationToken cancellationToken)
         {
-            var users = await _userRepository.GetAsync(cancellationToken);
-            var isUnique = users.All(user => user.MailAddress != mailAddress);
-            
-            return isUnique;
+            // ToDo: implement
+            // var users = await _userRepository.GetAsync(cancellationToken);
+            // var isUnique = users.All(user => user.MailAddress != mailAddress);
+            // 
+            // return isUnique;
+            return true;
         }
     }
 }

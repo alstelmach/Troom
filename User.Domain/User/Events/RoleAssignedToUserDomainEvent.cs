@@ -5,9 +5,9 @@ namespace User.Domain.User.Events
 {
     public sealed class RoleAssignedToUserDomainEvent : DomainEvent
     {
-        public RoleAssignedToUserDomainEvent(Guid entityId,
+        public RoleAssignedToUserDomainEvent(Guid userId,
             Guid roleId)
-                : base(entityId) =>
+                : base(userId) =>
                     RoleId = roleId;
         
         public Guid RoleId { get; }

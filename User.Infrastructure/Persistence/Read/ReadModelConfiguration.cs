@@ -4,8 +4,7 @@ using Core.Infrastructure.Persistence.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using User.Application.Dto.Role;
-using User.Application.Dto.User;
+using User.Application.Dto.Repositories;
 using User.Infrastructure.Persistence.Read.Context;
 using User.Infrastructure.Persistence.Read.Repositories;
 

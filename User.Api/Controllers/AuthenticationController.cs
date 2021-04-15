@@ -5,7 +5,7 @@ using Core.Application.Abstractions.Messaging.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using User.Application.Contracts.Authentication;
-using User.Application.Dto.Authentication;
+using User.Application.Dto;
 using Controller = Core.Infrastructure.Mvc.Controller;
 
 namespace User.Api.Controllers

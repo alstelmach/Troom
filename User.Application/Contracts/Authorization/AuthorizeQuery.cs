@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Security.Claims;
 using Core.Application.Abstractions.Messaging.Queries;
 using User.Application.Dto;
 
-namespace User.Application.Contracts.User.Queries
+namespace User.Application.Contracts.Authorization
 {
-    public sealed class GetUsersQuery : IQuery<IEnumerable<UserDto>>
+    public sealed class AuthorizeQuery : IQuery<AuthorizationResultDto>
     {
+        public Guid PermissionId { get; init; }
         public ClaimsPrincipal ClaimsPrincipal { get; set; }
     }
 }

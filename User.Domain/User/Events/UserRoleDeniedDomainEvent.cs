@@ -3,9 +3,9 @@ using Core.Domain.Abstractions.BuildingBlocks;
 
 namespace User.Domain.User.Events
 {
-    public sealed class RoleDeniedFromUserDomainEvent : DomainEvent
+    public sealed class UserRoleDeniedDomainEvent : DomainEvent
     {
-        public RoleDeniedFromUserDomainEvent(Guid entityId,
+        public UserRoleDeniedDomainEvent(Guid entityId,
             Guid roleId)
                 : base(entityId) =>
                     RoleId = roleId;
