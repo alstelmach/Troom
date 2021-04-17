@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AsCore.Application.Abstractions.Identity;
-using AsCore.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;

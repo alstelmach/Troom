@@ -38,7 +38,7 @@ namespace User.Infrastructure.Persistence.Read.Repositories
             var sqlQuery =
                 "SELECT \"Id\", \"Name\" "
                 + $"FROM \"{UserReadModelContext.SchemaName}\".\"Roles\" "
-                + $"WHERE \"Id\" = \"{id}\" "
+                + $"WHERE \"Id\" = '{id}' "
                 + "LIMIT 1";
 
             var user = await QueryFirstOrDefaultAsync(sqlQuery, cancellationToken);
