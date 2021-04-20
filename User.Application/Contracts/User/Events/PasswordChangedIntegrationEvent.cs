@@ -1,7 +1,7 @@
 ﻿using System;
 using AsCore.Application.Abstractions.Messaging.Events;
 
-namespace User.IntegrationEvents.User
+namespace User.Application.Contracts.User.Events
 {
     public sealed class PasswordChangedIntegrationEvent : IntegrationEvent
     {

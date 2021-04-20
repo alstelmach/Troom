@@ -2,10 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AsCore.Application.Abstractions.Messaging.Events;
+using User.Application.Contracts.User.Events;
 using User.Application.Dto;
 using User.Application.Repositories;
 using User.Domain.User.Events;
-using User.IntegrationEvents.User;
 
 namespace User.Application.Handlers.EventHandlers.Domain
 {
