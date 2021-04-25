@@ -36,9 +36,9 @@ namespace User.Api
                     .UseInfrastructureMiddlewares(serviceProvider)
                     .UseHealthChecksMiddleware()
                     .UseHttpsRedirection()
+                    .UseCorsMiddlewares()
                     .UseRouting()
                     .UseIdentityMiddlewares()
-                    .UseMvcMiddlewares()
-                    .UseCorsMiddlewares();
+                    .UseMvcMiddlewares();
     }
 }
