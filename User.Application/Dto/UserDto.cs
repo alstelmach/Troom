@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace User.Application.Dto
 {
-    public sealed class UserDto
+    public sealed record UserDto
     {
         public UserDto(Guid id,
             string login,

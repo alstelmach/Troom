@@ -7,7 +7,7 @@ using Xunit;
 
 namespace User.UnitTests.Domain.User
 {
-    public sealed class UserTests
+    public sealed class UserTest
     {
         [Fact]
         public static void ShouldChangeUserPassword()

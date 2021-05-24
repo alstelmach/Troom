@@ -3,7 +3,7 @@ using AsCore.Application.Abstractions.Messaging.Events;
 
 namespace User.Application.Contracts.User.Events
 {
-    public sealed class PasswordChangedIntegrationEvent : IntegrationEvent
+    public sealed record PasswordChangedIntegrationEvent : IntegrationEvent
     {
         public PasswordChangedIntegrationEvent(Guid entityId)
             : base(entityId,

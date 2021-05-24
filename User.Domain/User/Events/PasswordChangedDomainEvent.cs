@@ -3,7 +3,7 @@ using AsCore.Domain.Abstractions.BuildingBlocks;
 
 namespace User.Domain.User.Events
 {
-    public sealed class PasswordChangedDomainEvent : DomainEvent
+    public sealed record PasswordChangedDomainEvent : DomainEvent
     {
         public PasswordChangedDomainEvent(Guid entityId,
             byte[] newPassword)

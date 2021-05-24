@@ -12,6 +12,6 @@ namespace User.Domain
             serviceCollection
                 .AddScoped<IValidator<Password>, PasswordValidator>()
                 .AddScoped<IValidator<User.User>, UserValidator>()
-                .AddScoped<UserService>();
+                .AddScoped<UserDomainService>();
     }
 }

@@ -1,7 +1,8 @@
 ﻿using AsCore.Infrastructure.Messaging;
+using AsCore.Infrastructure.Messaging.MessageBrokers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using RabbitMQ.Client;
+using User.Application;
 
 namespace User.Infrastructure.Messaging
 {
@@ -11,9 +12,10 @@ namespace User.Infrastructure.Messaging
             this IServiceCollection serviceCollection,
             IConfiguration configuration) =>
                 serviceCollection
-                    .AddMessaging()
-                    .AddRabbitMQ(configuration,
-                        ExchangeType.Fanout,
-                        true);
+                    .AddDomesticMessaging()
+                    .AddIntegrationMessaging(configuration,
+                        MessageBroker.RabbitMQ,
+                        true,
+                        typeof(ApplicationConfiguration).Assembly); // ToDo: Probably may find a little better type for obtaining the handlers assembly
     }
 }

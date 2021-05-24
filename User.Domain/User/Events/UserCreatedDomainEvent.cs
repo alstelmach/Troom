@@ -4,7 +4,7 @@ using User.Domain.User.Enumerations;
 
 namespace User.Domain.User.Events
 {
-    public sealed class UserCreatedDomainEvent : DomainEvent
+    public sealed record UserCreatedDomainEvent : DomainEvent
     {
         public UserCreatedDomainEvent(Guid entityId,
             string login,

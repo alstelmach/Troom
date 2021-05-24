@@ -5,7 +5,7 @@
     </PropertyGroup>
     
     <ItemGroup>
-      <PackageReference Include="AsCore.Domain.Abstractions" Version="1.0.1" />
+      <PackageReference Include="AsCore.Domain.Abstractions" Version="1.0.3" />
       <PackageReference Include="FluentValidation.AspNetCore" Version="9.5.3" />
     </ItemGroup>
 

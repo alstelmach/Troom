@@ -27,23 +27,18 @@ namespace User.Application.Handlers.QueryHandlers
         public async Task<AuthenticationResultDto> Handle(AuthenticationQuery query,
             CancellationToken cancellationToken)
         {
-            var authenticationResult = new AuthenticationResultDto();
             var user = await _userRepository.GetAsync(query.Login, cancellationToken);
-            var doesNotExist = user is null;
-
-            if (doesNotExist)
-            {
-                return authenticationResult;
-            }
-            
-            var isAuthenticated = _encryptionService.VerifyPassword(user.Password, query.Password);
-
-            if (isAuthenticated)
-            {
-                authenticationResult.IsAuthenticated = true;
-                authenticationResult.JsonWebToken = _tokenGenerationService.GenerateToken(user.Id);
-                authenticationResult.TokenOwner = user;
-            }
+            var doesExist = user is not null;
+            var isAuthenticated = doesExist && _encryptionService.VerifyPassword(user.Password, query.Password);
+            var authenticationResult = isAuthenticated
+                ? new AuthenticationResultDto(
+                    true,
+                    _tokenGenerationService.GenerateToken(user.Id),
+                    user)
+                : new AuthenticationResultDto(
+                    false,
+                    string.Empty,
+                    default);
 
             return authenticationResult;
         }

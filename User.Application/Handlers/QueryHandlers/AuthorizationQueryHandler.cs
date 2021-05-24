@@ -26,12 +26,10 @@ namespace User.Application.Handlers.QueryHandlers
                 query.PermissionId,
                 cancellationToken);
 
-            var authorizationResults = new AuthorizationResultDto
-            {
-                UserId = ownerId,
-                PermissionId = query.PermissionId,
-                IsAuthorized = isAuthorized
-            };
+            var authorizationResults = new AuthorizationResultDto(
+                ownerId,
+                query.PermissionId,
+                isAuthorized);
 
             return authorizationResults;
         }

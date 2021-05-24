@@ -3,9 +3,9 @@ using AsCore.Domain.Abstractions.BuildingBlocks;
 
 namespace User.Domain.Role.Events
 {
-    public sealed class PermissionAssignedToRoleDomainEvent : DomainEvent
+    public sealed record PermissionAssignedToRoleDomainEvent : DomainEvent
     {
-        public PermissionAssignedToRoleDomainEvent(Guid entityId,
+        internal PermissionAssignedToRoleDomainEvent(Guid entityId,
             Guid permissionId)
                 : base(entityId) =>
                     PermissionId = permissionId;

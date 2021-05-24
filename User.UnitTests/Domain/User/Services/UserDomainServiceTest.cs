@@ -18,11 +18,11 @@ namespace User.UnitTests.Domain.User.Services
         private readonly Mock<IEncryptionService> _encryptionServiceMock = new();
         private readonly Mock<IValidator<global::User.Domain.User.User>> _userValidatorMock = new();
         private readonly Mock<IValidator<Password>> _passwordValidatorMock = new();
-        private readonly UserService _userService;
+        private readonly UserDomainService _userService;
 
         public UserServiceTest()
         {
-            _userService = new UserService(
+            _userService = new UserDomainService(
                 _userRepositoryMock.Object,
                 _encryptionServiceMock.Object,
                 _userValidatorMock.Object,

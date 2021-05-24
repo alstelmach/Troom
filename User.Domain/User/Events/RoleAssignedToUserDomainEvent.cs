@@ -3,7 +3,7 @@ using AsCore.Domain.Abstractions.BuildingBlocks;
 
 namespace User.Domain.User.Events
 {
-    public sealed class RoleAssignedToUserDomainEvent : DomainEvent
+    public sealed record RoleAssignedToUserDomainEvent : DomainEvent
     {
         public RoleAssignedToUserDomainEvent(Guid userId,
             Guid roleId)

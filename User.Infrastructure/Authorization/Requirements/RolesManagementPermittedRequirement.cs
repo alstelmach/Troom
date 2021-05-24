@@ -22,12 +22,8 @@ namespace User.Infrastructure.Authorization.Requirements
         {
             using var scope = _serviceProvider.CreateScope();
             var queryBus = scope.ServiceProvider.GetRequiredService<IQueryBus>();
-            var authorizationQuery = new AuthorizeQuery
-            {
-                PermissionId = Guid.Parse(AuthorizationConstants.RoleManagementPermissionId),
-                ClaimsPrincipal = context.User
-            };
-
+            var permissionId = Guid.Parse(AuthorizationConstants.RoleManagementPermissionId);
+            var authorizationQuery = new AuthorizeQuery(permissionId) { ClaimsPrincipal = context.User };
             var authorizationResultDto = await queryBus.QueryAsync(authorizationQuery);
 
             if (authorizationResultDto.IsAuthorized)

@@ -3,9 +3,9 @@ using AsCore.Domain.Abstractions.BuildingBlocks;
 
 namespace User.Domain.Permission.Events
 {
-    public sealed class PermissionCreatedDomainEvent : DomainEvent
+    public sealed record PermissionCreatedDomainEvent : DomainEvent
     {
-        public PermissionCreatedDomainEvent(Guid entityId,
+        internal PermissionCreatedDomainEvent(Guid entityId,
             string description)
                 : base(entityId) =>
                     Description = description;

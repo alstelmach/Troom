@@ -32,8 +32,8 @@ namespace User.Api.Controllers
         public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserCommand command,
             CancellationToken cancellationToken)
         {
-            command.Id = Guid.NewGuid();
             command.ClaimsPrincipal = User;
+            command = command with { Id = Guid.NewGuid() };
             
             await CommandBus.SendAsync(command, cancellationToken);
 
@@ -49,8 +49,8 @@ namespace User.Api.Controllers
             [FromBody] AssignRoleToUserCommand command,
             CancellationToken cancellationToken)
         {
-            command.UserId = userId;
             command.ClaimsPrincipal = User;
+            command = command with { UserId = userId };
 
             await CommandBus.SendAsync(command, cancellationToken);
 
@@ -76,9 +76,8 @@ namespace User.Api.Controllers
         public async Task<ActionResult<UserDto>> GetUserAsync([FromRoute] Guid userId,
             CancellationToken cancellationToken)
         {
-            var query = new GetUserQuery
+            var query = new GetUserQuery(userId)
             {
-                Id = userId,
                 ClaimsPrincipal = User
             };
 
@@ -94,9 +93,8 @@ namespace User.Api.Controllers
         public async Task<ActionResult<IEnumerable<RoleDto>>> GetUserRolesAsync([FromRoute] Guid userId,
             CancellationToken cancellationToken)
         {
-            var query = new GetUserRolesQuery
+            var query = new GetUserRolesQuery(userId)
             {
-                UserId = userId,
                 ClaimsPrincipal = User
             };
 
@@ -137,8 +135,8 @@ namespace User.Api.Controllers
             [FromBody] DenyUserRoleCommand command,
             CancellationToken cancellationToken)
         {
-            command.UserId = userId;
             command.ClaimsPrincipal = User;
+            command = command with { UserId = userId };
 
             await CommandBus.SendAsync(command, cancellationToken);
 

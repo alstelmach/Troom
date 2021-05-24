@@ -28,9 +28,8 @@ namespace User.Api.Controllers
         public async Task<ActionResult<AuthorizationResultDto>> AuthorizeAsync([FromQuery] Guid permissionId,
             CancellationToken cancellationToken)
         {
-            var query = new AuthorizeQuery
+            var query = new AuthorizeQuery(permissionId)
             {
-                PermissionId = permissionId,
                 ClaimsPrincipal = User
             };
 

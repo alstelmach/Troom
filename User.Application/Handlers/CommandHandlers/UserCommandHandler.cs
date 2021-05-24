@@ -17,12 +17,12 @@ namespace User.Application.Handlers.CommandHandlers
         ICommandHandler<AssignRoleToUserCommand>,
         ICommandHandler<DenyUserRoleCommand>
     {
-        private readonly UserService _userService;
+        private readonly UserDomainService _userService;
         private readonly IEncryptionService _encryptionService;
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
 
-        public UserCommandHandler(UserService userService,
+        public UserCommandHandler(UserDomainService userService,
             IEncryptionService encryptionService,
             IUserRepository userRepository,
             IRoleRepository roleRepository)

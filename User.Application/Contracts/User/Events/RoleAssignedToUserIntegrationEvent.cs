@@ -3,7 +3,7 @@ using AsCore.Application.Abstractions.Messaging.Events;
 
 namespace User.Application.Contracts.User.Events
 {
-    public sealed class RoleAssignedToUserIntegrationEvent : IntegrationEvent
+    public sealed record RoleAssignedToUserIntegrationEvent : IntegrationEvent
     {
         public RoleAssignedToUserIntegrationEvent(Guid userId,
             Guid roleId)

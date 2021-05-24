@@ -3,9 +3,9 @@ using AsCore.Domain.Abstractions.BuildingBlocks;
 
 namespace User.Domain.Role.Events
 {
-    public sealed class RoleCreatedDomainEvent : DomainEvent
+    public sealed record RoleCreatedDomainEvent : DomainEvent
     {
-        public RoleCreatedDomainEvent(Guid entityId,
+        internal RoleCreatedDomainEvent(Guid entityId,
             string name)
                 : base(entityId) =>
                     Name = name;

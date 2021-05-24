@@ -7,14 +7,14 @@ using User.Domain.User.ValueObjects;
 
 namespace User.Domain.User.Services
 {
-    public sealed class UserService
+    public sealed class UserDomainService
     {
         private readonly IUserRepository _userRepository;
         private readonly IEncryptionService _encryptionService;
         private readonly IValidator<User> _userValidator;
         private readonly IValidator<Password> _passwordValidator;
 
-        public UserService(IUserRepository userRepository,
+        public UserDomainService(IUserRepository userRepository,
             IEncryptionService encryptionService,
             IValidator<User> userValidator,
             IValidator<Password> passwordValidator)
